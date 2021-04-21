@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="form-style-2">
-      <form action="">
+      <form action="/">
         <div class="form-style-2-heading">Provide your information</div>
 
         <div class="form-group">
           <label class="form__label"
-            >Фамилия <span class="required">*</span></label
+            >Фамилия<span class="required">*</span></label
           >
 
           <div>
@@ -32,11 +32,11 @@
             </div>
           </div>
         </div>
-        <div>
+        <!-- <div>
           {{ $v.form.lastName }}
-        </div>
+        </div> -->
         <div class="form-group">
-          <label class="form__label">Имя <span class="required">*</span></label>
+          <label class="form__label">Имя<span class="required">*</span></label>
           <div>
             <input
               class="form__input"
@@ -52,34 +52,33 @@
           </div>
         </div>
 
-        <!-- <div>
+        <div>
           <div class="form-group">
             <label class="form__label">Отчество</label>
             <input class="form__input" />
           </div>
 
-          <div
-            class="form-group"
-            :class="{ 'form-group--error': $v.form.birthDate.$error }"
-          >
+          <div class="form-group">
             <label class="form__label"
               >Дата рождения<span class="required">*</span></label
             >
             <div>
               <input
-                class="form__input"
+                class="form__input datepicker-input"
                 v-model.trim="$v.form.birthDate.$model"
+                type="date"
               />
-              <div class="error" v-if="!$v.form.birthDate.required">
+              <div
+                class="error"
+                v-if="!$v.form.birthDate.required"
+                :class="{ 'form-group--error': $v.form.birthDate.$error }"
+              >
                 Field Дата рождения is required.
               </div>
             </div>
           </div>
 
-          <div
-            class="form-group"
-            :class="{ 'form-group--error': $v.form.mobileNumber.$error }"
-          >
+          <div class="form-group">
             <label class="form__label"
               >Номер телефона<span class="required">*</span></label
             >
@@ -87,8 +86,14 @@
               <input
                 class="form__input"
                 v-model.trim="$v.form.mobileNumber.$model"
+                type="tel"
+                placeholder="7 (777) 777 77 77"
               />
-              <div class="error" v-if="!$v.form.mobileNumber.required">
+              <div
+                class="error"
+                v-if="!$v.form.mobileNumber.required"
+                :class="{ 'form-group--error': $v.form.mobileNumber.$error }"
+              >
                 Field Номер телефона is required.
               </div>
             </div>
@@ -99,19 +104,31 @@
             <input class="form__input" />
           </div>
 
-          <div
-            class="form-group"
-            :class="{ 'form-group--error': $v.form.clientGroup.$error }"
-          >
+          <div class="form-group">
             <label class="form__label"
               >Группа клиентов<span class="required">*</span></label
             >
             <div>
-              <input
+              <select
+                name=""
+                id=""
+                v-model.trim="$v.form.clientGroup.$model"
+                multiple
+              >
+                <option value="VIP" selected>VIP</option>
+                <option value="Проблемные">Проблемные</option>
+                <option value="ОМС">ОМС</option>
+              </select>
+
+              <!-- <input
                 class="form__input"
                 v-model.trim="$v.form.clientGroup.$model"
-              />
-              <div class="error" v-if="!$v.form.clientGroup.required">
+              /> -->
+              <div
+                class="error"
+                v-if="!$v.form.clientGroup.required"
+                :class="{ 'form-group--error': $v.form.clientGroup.$error }"
+              >
                 Field Группа клиентов is required.
               </div>
             </div>
@@ -119,7 +136,11 @@
 
           <div class="form-group">
             <label class="form__label">Лечащий врач</label>
-            <input class="form__input" />
+            <select name="" id="">
+              <option value="Иванов" selected>Иванов</option>
+              <option value="Захаров">Захаров</option>
+              <option value="Чернышева">Чернышева</option>
+            </select>
           </div>
 
           <div class="form-style-2-heading">Адрес</div>
@@ -138,16 +159,17 @@
             <input class="form__input" />
           </div>
 
-          <div
-            class="form-group"
-            :class="{ 'form-group--error': $v.form.city.$error }"
-          >
+          <div class="form-group">
             <label class="form__label"
               >Город<span class="required">*</span></label
             >
             <div>
               <input class="form__input" v-model.trim="$v.form.city.$model" />
-              <div class="error" v-if="!$v.form.city.required">
+              <div
+                class="error"
+                v-if="!$v.form.city.required"
+                :class="{ 'form-group--error': $v.form.city.$error }"
+              >
                 Field Город is required.
               </div>
             </div>
@@ -164,10 +186,7 @@
           </div>
 
           <div class="form-style-2-heading">Паспорт</div>
-          <div
-            class="form-group"
-            :class="{ 'form-group--error': $v.form.documentType.$error }"
-          >
+          <div class="form-group">
             <label class="form__label"
               >Тип документа<span class="required">*</span></label
             >
@@ -176,7 +195,11 @@
                 class="form__input"
                 v-model.trim="$v.form.documentType.$model"
               />
-              <div class="error" v-if="!$v.form.documentType.required">
+              <div
+                class="error"
+                v-if="!$v.form.documentType.required"
+                :class="{ 'form-group--error': $v.form.documentType.$error }"
+              >
                 Field Тип документа is required.
               </div>
             </div>
@@ -197,10 +220,7 @@
             <input class="form__input" />
           </div>
 
-          <div
-            class="form-group"
-            :class="{ 'form-group--error': $v.form.documentGivenDate.$error }"
-          >
+          <div class="form-group">
             <label class="form__label"
               >Дата выдачи<span class="required">*</span></label
             >
@@ -208,8 +228,15 @@
               <input
                 class="form__input"
                 v-model.trim="$v.form.documentGivenDate.$model"
+                type="date"
               />
-              <div class="error" v-if="!$v.form.documentGivenDate.required">
+              <div
+                class="error"
+                v-if="!$v.form.documentGivenDate.required"
+                :class="{
+                  'form-group--error': $v.form.documentGivenDate.$error,
+                }"
+              >
                 Field Дата выдачи is required.
               </div>
             </div>
@@ -218,14 +245,22 @@
           <div
             class="form-group"
             :class="{ 'form-group--error': $v.form.$error }"
-          ></div>
-          <div class="error" v-if="$v.form.$error">Form is invalid.</div>
-        </div> -->
-
-        <!-- <tree-view
-        :data="$v.form"
-        :options="{ rootObjectKey: '$v.form', maxDepth: 2 }"
-      ></tree-view> -->
+          >
+            <button @click.prevent="submitForm">Submit</button>
+            <!-- <p v-if="error" class="error">
+              The form above has errors, <br />please get your act together and
+              resubmit
+            </p>
+            <p v-else-if="empty && uiState === 'submit clicked'" class="error">
+              The form above is empty, <br />cmon y'all you can't submit an
+              empty form!
+            </p>
+            <p v-else-if="uiState === 'form submitted'" class="success">
+              Hooray! Your form was submitted!
+            </p> -->
+            <div class="error" v-if="$v.form.$error">Form is invalid.</div>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -291,6 +326,15 @@ export default {
     },
   },
   methods: {
+    submitForm() {
+      this.empty = !this.$v.form.$anyDirty;
+      this.errors = this.$v.form.$anyError;
+      this.uiState = "submit clicked";
+      if (this.errors === false && this.empty === false) {
+        //this is where you send the responses
+        this.uiState = "form submitted";
+      }
+    },
     status(validation) {
       return {
         error: validation.$error,
@@ -305,44 +349,45 @@ export default {
   },
 };
 </script>
-<style>
-.form-style-2 {
+<style lang="sass">
+.form-style-2
   /* max-width: 500px; */
-  padding: 20px 12px 10px 20px;
-  font: 13px Arial, Helvetica, sans-serif;
-}
-.form-style-2-heading {
-  font-weight: bold;
-  font-style: italic;
-  border-bottom: 2px solid #ddd;
-  font-size: 15px;
-  padding-bottom: 3px;
-}
-.form-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-}
-.form-group label {
-  margin-right: 10px;
-  width: 150px;
-  font-weight: bold;
-}
+  padding: 20px 12px 10px 20px
+  font: 13px Arial, Helvetica, sans-serif
 
-.required {
-  color: red;
-}
+  &-heading
+    font-weight: bold
+    font-style: italic
+    border-bottom: 2px solid #ddd
+    font-size: 15px
+    padding-bottom: 3px
 
-.error {
-  display: none;
-}
-.form-group--error {
-  display: block;
-  border-color: red;
-  background: #fdd;
-}
-.error:focus {
-  outline-color: #f99;
-}
+.form-group
+  display: flex
+  justify-content: center
+  align-items: center
+  margin: 20px
+
+  & label
+    margin-right: 10px
+    width: 150px
+    font-weight: bold
+
+.required
+  color: red
+
+.error
+  display: none
+
+.form-group--error
+  display: block
+  border-color: red
+  background: #fdd
+
+.error:focus
+  outline-color: #f99
+
+.datepicker-input
+  cursor: pointer
+  box-sizing: border-box
 </style>
