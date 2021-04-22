@@ -1,58 +1,59 @@
 <template>
   <div>
-    <div class="form-style-2">
+    <div class="form-style">
       <form action="/">
-        <div class="form-style-2-heading">Provide your information</div>
-
-        <div class="form-group">
-          <label class="form__label"
-            >Фамилия<span class="required">*</span></label
-          >
-
-          <div>
-            <input
-              class="form__input"
-              v-model.trim="$v.form.lastName.$model"
-              @input="setLastName($event.target.value)"
-            />
-            <div
-              class="error"
-              v-if="!$v.form.lastName.required"
-              :class="{ 'form-group--error': $v.form.lastName.$error }"
+        <div class="form-style-heading">Персональная информация</div>
+        <div class="wrapper">
+          <div class="form-group">
+            <label class="form__label"
+              >Фамилия<span class="required">*</span></label
             >
-              Field Фамилия is required.
-            </div>
-            <div
-              class="error"
-              v-if="!$v.form.lastName.minLength"
-              :class="{ 'form-group--error': $v.form.lastName.$error }"
-            >
-              Field must have at least
-              {{ $v.form.lastName.$params.minLength.min }} characters.
+
+            <div>
+              <input
+                class="form__input"
+                v-model.trim="$v.form.lastName.$model"
+                @input="setLastName($event.target.value)"
+              />
+              <div
+                class="error"
+                v-if="!$v.form.lastName.required"
+                :class="{ 'form-group--error': $v.form.lastName.$error }"
+              >
+                Field Фамилия is required.
+              </div>
+              <div
+                class="error"
+                v-if="!$v.form.lastName.minLength"
+                :class="{ 'form-group--error': $v.form.lastName.$error }"
+              >
+                Field must have at least
+                {{ $v.form.lastName.$params.minLength.min }} characters.
+              </div>
             </div>
           </div>
-        </div>
-        <!-- <div>
+          <!-- <div>
           {{ $v.form.lastName }}
         </div> -->
-        <div class="form-group">
-          <label class="form__label">Имя<span class="required">*</span></label>
-          <div>
-            <input
-              class="form__input"
-              v-model.trim="$v.form.firstName.$model"
-            />
-            <div
-              class="error"
-              v-if="!$v.form.firstName.required"
-              :class="{ 'form-group--error': $v.form.firstName.$error }"
+          <div class="form-group">
+            <label class="form__label"
+              >Имя<span class="required">*</span></label
             >
-              Field Имя is required.
+            <div>
+              <input
+                class="form__input"
+                v-model.trim="$v.form.firstName.$model"
+              />
+              <div
+                class="error"
+                v-if="!$v.form.firstName.required"
+                :class="{ 'form-group--error': $v.form.firstName.$error }"
+              >
+                Field Имя is required.
+              </div>
             </div>
           </div>
-        </div>
 
-        <div>
           <div class="form-group">
             <label class="form__label">Отчество</label>
             <input class="form__input" />
@@ -110,6 +111,7 @@
             >
             <div>
               <select
+                class="picker-input"
                 name=""
                 id=""
                 v-model.trim="$v.form.clientGroup.$model"
@@ -136,14 +138,15 @@
 
           <div class="form-group">
             <label class="form__label">Лечащий врач</label>
-            <select name="" id="">
+            <select name="" id="" class="picker-input">
               <option value="Иванов" selected>Иванов</option>
               <option value="Захаров">Захаров</option>
               <option value="Чернышева">Чернышева</option>
             </select>
           </div>
-
-          <div class="form-style-2-heading">Адрес</div>
+        </div>
+        <div class="form-style-heading">Адрес</div>
+        <div class="wrapper">
           <div class="form-group">
             <label class="form__label">Индекс</label>
             <input class="form__input" />
@@ -184,8 +187,9 @@
             <label class="form__label">Дом</label>
             <input class="form__input" />
           </div>
-
-          <div class="form-style-2-heading">Паспорт</div>
+        </div>
+        <div class="form-style-heading">Паспорт</div>
+        <div class="wrapper">
           <div class="form-group">
             <label class="form__label"
               >Тип документа<span class="required">*</span></label
@@ -226,7 +230,7 @@
             >
             <div>
               <input
-                class="form__input"
+                class="form__input datepicker-input"
                 v-model.trim="$v.form.documentGivenDate.$model"
                 type="date"
               />
@@ -241,13 +245,13 @@
               </div>
             </div>
           </div>
-
-          <div
-            class="form-group"
-            :class="{ 'form-group--error': $v.form.$error }"
-          >
-            <button @click.prevent="submitForm">Submit</button>
-            <!-- <p v-if="error" class="error">
+        </div>
+        <div
+          class="form-group"
+          :class="{ 'form-group--error': $v.form.$error }"
+        >
+          <button @click.prevent="submitForm">Отправить</button>
+          <!-- <p v-if="error" class="error">
               The form above has errors, <br />please get your act together and
               resubmit
             </p>
@@ -258,8 +262,7 @@
             <p v-else-if="uiState === 'form submitted'" class="success">
               Hooray! Your form was submitted!
             </p> -->
-            <div class="error" v-if="$v.form.$error">Form is invalid.</div>
-          </div>
+          <div class="error" v-if="$v.form.$error">Form is invalid.</div>
         </div>
       </form>
     </div>
@@ -279,7 +282,7 @@ export default {
         birthDate: "",
         mobileNumber: "",
         gender: "",
-        clientGroup: "",
+        clientGroup: [],
         doctor: "",
         index: "",
         country: "",
@@ -350,44 +353,72 @@ export default {
 };
 </script>
 <style lang="sass">
-.form-style-2
-  /* max-width: 500px; */
-  padding: 20px 12px 10px 20px
-  font: 13px Arial, Helvetica, sans-serif
+.form-style
 
-  &-heading
-    font-weight: bold
-    font-style: italic
-    border-bottom: 2px solid #ddd
-    font-size: 15px
-    padding-bottom: 3px
-
-.form-group
-  display: flex
   justify-content: center
   align-items: center
-  margin: 20px
+  position: relative
+  top: 50%
+  left: 50%
+  transform: translate(-50%, 0%)
 
-  & label
-    margin-right: 10px
-    width: 150px
+  padding: 20px
+  box-shadow: 0 0 30px rgba(0, 0, 2, 0.5)
+
+  border: 2px #c5d5cd solid
+  background: #eeebcc
+  max-width: 1000px
+  padding: 20px 12px 10px 20px
+  font: 13px
+  // color: #e3e0cf
+  .wrapper
+    display: grid
+    grid-template-columns: 1fr 1fr
+  &-heading
     font-weight: bold
+    border-bottom: 2px solid #9fa8a3
+    font-size: 17px
+    padding-bottom: 13px
+    text-align: center
+  // @media only screen and (max-width: 1024px)
+  //   height: 800px
 
-.required
-  color: red
+  .form-group
+    display: flex
+    justify-content: center
+    align-items: center
+    margin: 20px
 
-.error
-  display: none
+    & label
+      margin-right: 10px
+      width: 150px
 
-.form-group--error
-  display: block
-  border-color: red
-  background: #fdd
+  .required
+    color: red
 
-.error:focus
-  outline-color: #f99
+  .error
+    display: none
 
-.datepicker-input
-  cursor: pointer
-  box-sizing: border-box
+  .form-group--error
+    display: block
+    border-color: red
+    background: #fdd
+
+  .error:focus
+    outline-color: #f99
+
+  .datepicker-input
+    cursor: pointer
+    box-sizing: border-box
+    width: 248px
+
+  .picker-input
+    width: 248px
+
+  button
+    border: none
+    padding: 8px 15px 8px 15px
+    background: #f6b323
+    color: #fff
+    box-shadow: 1px 1px 4px #DADADA
 </style>
