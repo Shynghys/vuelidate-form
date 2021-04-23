@@ -5,29 +5,32 @@
         <div class="form-style-heading">Персональная информация</div>
         <div class="wrapper">
           <div class="form-group">
-            <label class="form__label"
+            <label class="form__label" for="lastName"
               >Фамилия<span class="required">*</span></label
             >
 
             <div>
               <input
+                id="lastName"
                 class="form__input"
                 v-model.trim="$v.form.lastName.$model"
-                @input="setLastName($event.target.value)"
+                type="text"
               />
               <div
                 class="error"
-                v-if="!$v.form.lastName.required"
-                :class="{ 'form-group--error': $v.form.lastName.$error }"
+                v-if="!$v.form.lastName.required || errors"
+                :class="{
+                  'form-group--error': $v.form.lastName.$error,
+                }"
               >
-                Field Фамилия is required.
+                Поле Фамилия обязательно.
               </div>
               <div
                 class="error"
-                v-if="!$v.form.lastName.minLength"
+                v-if="!$v.form.lastName.minLength || errors"
                 :class="{ 'form-group--error': $v.form.lastName.$error }"
               >
-                Field must have at least
+                Поле must have at least
                 {{ $v.form.lastName.$params.minLength.min }} characters.
               </div>
             </div>
@@ -46,10 +49,10 @@
               />
               <div
                 class="error"
-                v-if="!$v.form.firstName.required"
+                v-if="!$v.form.firstName.required || errors"
                 :class="{ 'form-group--error': $v.form.firstName.$error }"
               >
-                Field Имя is required.
+                Поле Имя обязательно.
               </div>
             </div>
           </div>
@@ -71,10 +74,10 @@
               />
               <div
                 class="error"
-                v-if="!$v.form.birthDate.required"
+                v-if="!$v.form.birthDate.required || errors"
                 :class="{ 'form-group--error': $v.form.birthDate.$error }"
               >
-                Field Дата рождения is required.
+                Поле Дата рождения обязательно.
               </div>
             </div>
           </div>
@@ -92,10 +95,19 @@
               />
               <div
                 class="error"
-                v-if="!$v.form.mobileNumber.required"
+                v-if="!$v.form.mobileNumber.required || errors"
                 :class="{ 'form-group--error': $v.form.mobileNumber.$error }"
               >
-                Field Номер телефона is required.
+                Поле Номер телефона обязательно.
+              </div>
+              <div
+                class="error"
+                v-if="!$v.form.mobileNumber.numbersOnly || errors"
+                :class="{
+                  'form-group--error': $v.form.mobileNumber.$error,
+                }"
+              >
+                Номер телефона должен состоять как минимум из 8 чисел.
               </div>
             </div>
           </div>
@@ -128,10 +140,10 @@
               /> -->
               <div
                 class="error"
-                v-if="!$v.form.clientGroup.required"
+                v-if="!$v.form.clientGroup.required || errors"
                 :class="{ 'form-group--error': $v.form.clientGroup.$error }"
               >
-                Field Группа клиентов is required.
+                Поле Группа клиентов обязательно.
               </div>
             </div>
           </div>
@@ -170,10 +182,10 @@
               <input class="form__input" v-model.trim="$v.form.city.$model" />
               <div
                 class="error"
-                v-if="!$v.form.city.required"
+                v-if="!$v.form.city.required || errors"
                 :class="{ 'form-group--error': $v.form.city.$error }"
               >
-                Field Город is required.
+                Поле Город обязательно.
               </div>
             </div>
           </div>
@@ -201,10 +213,10 @@
               />
               <div
                 class="error"
-                v-if="!$v.form.documentType.required"
+                v-if="!$v.form.documentType.required || errors"
                 :class="{ 'form-group--error': $v.form.documentType.$error }"
               >
-                Field Тип документа is required.
+                Поле Тип документа обязательно.
               </div>
             </div>
           </div>
@@ -236,35 +248,45 @@
               />
               <div
                 class="error"
-                v-if="!$v.form.documentGivenDate.required"
+                v-if="!$v.form.documentGivenDate.required || errors"
                 :class="{
                   'form-group--error': $v.form.documentGivenDate.$error,
                 }"
               >
-                Field Дата выдачи is required.
+                Поле Дата выдачи обязательно.
               </div>
             </div>
           </div>
         </div>
-        <div
-          class="form-group"
-          :class="{ 'form-group--error': $v.form.$error }"
-        >
-          <button @click.prevent="submitForm">Отправить</button>
-          <!-- <p v-if="error" class="error">
-              The form above has errors, <br />please get your act together and
-              resubmit
-            </p>
-            <p v-else-if="empty && uiState === 'submit clicked'" class="error">
-              The form above is empty, <br />cmon y'all you can't submit an
-              empty form!
-            </p>
-            <p v-else-if="uiState === 'form submitted'" class="success">
-              Hooray! Your form was submitted!
-            </p> -->
-          <div class="error" v-if="$v.form.$error">Form is invalid.</div>
+
+        <div>
+          <div v-if="errors">
+            Форма не правильно заполнена, заполните и отправьте заного.
+          </div>
+          <div
+            class="error"
+            :class="{
+              'form-group--error': empty && uiState === 'submit clicked',
+            }"
+            v-else-if="empty && uiState === 'submit clicked'"
+          >
+            Форма пуста, необходимо заполнить обязательные поля!
+          </div>
+          <div v-else-if="uiState === 'form submitted'" class="success">
+            Форма была отправлена
+          </div>
+
+          <div class="right">
+            <button class="button" @click.prevent="submitForm">
+              Отправить
+            </button>
+          </div>
         </div>
       </form>
+      <pre>{{ $v }}</pre>
+      <div>error {{ $v.form.$anyError }}</div>
+      <div>error1 {{ $v.form.lastName.$anyError }}</div>
+      <div>dirty {{ $v.form.$anyDirty }}</div>
     </div>
   </div>
 </template>
@@ -275,26 +297,29 @@ import { required, minLength } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
+      uiState: "submit not clicked",
+      errors: false,
+      empty: true,
       form: {
-        lastName: "",
-        firstName: "",
-        patronymicName: "",
-        birthDate: "",
-        mobileNumber: "",
-        gender: "",
+        lastName: null,
+        firstName: null,
+        patronymicName: null,
+        birthDate: null,
+        mobileNumber: null,
+        gender: null,
         clientGroup: [],
-        doctor: "",
-        index: "",
-        country: "",
-        region: "",
-        city: "",
-        street: "",
-        house: "",
-        documentType: "",
-        documentSeries: "",
-        documentNumber: "",
-        documentGiverBy: "",
-        documentGivenDate: "",
+        doctor: null,
+        index: null,
+        country: null,
+        region: null,
+        city: null,
+        street: null,
+        house: null,
+        documentType: null,
+        documentSeries: null,
+        documentNumber: null,
+        documentGiverBy: null,
+        documentGivenDate: null,
       },
     };
   },
@@ -302,17 +327,21 @@ export default {
     form: {
       lastName: {
         required,
-        minLength: minLength(5),
+        minLength: minLength(3),
       },
       firstName: {
         required,
-        minLength: minLength(5),
+        minLength: minLength(3),
       },
       birthDate: {
         required,
       },
       mobileNumber: {
         required,
+
+        numbersOnly(mobileNumber) {
+          return /[0-9]/.test(mobileNumber) && mobileNumber.length >= 8;
+        },
       },
       clientGroup: {
         required,
@@ -332,22 +361,12 @@ export default {
     submitForm() {
       this.empty = !this.$v.form.$anyDirty;
       this.errors = this.$v.form.$anyError;
+
       this.uiState = "submit clicked";
+
       if (this.errors === false && this.empty === false) {
-        //this is where you send the responses
         this.uiState = "form submitted";
       }
-    },
-    status(validation) {
-      return {
-        error: validation.$error,
-        dirty: validation.$$touch,
-      };
-    },
-
-    setLastName(value) {
-      this.lastName = value;
-      this.$v.form.lastName.$touch();
     },
   },
 };
@@ -374,14 +393,17 @@ export default {
   .wrapper
     display: grid
     grid-template-columns: 1fr 1fr
+    @media only screen and (max-width: 768px)
+      grid-template-columns: 1fr
+    @media only screen and (max-width: 1024px)
+      grid-template-columns: 1fr
+
   &-heading
     font-weight: bold
     border-bottom: 2px solid #9fa8a3
     font-size: 17px
     padding-bottom: 13px
     text-align: center
-  // @media only screen and (max-width: 1024px)
-  //   height: 800px
 
   .form-group
     display: flex
@@ -392,17 +414,25 @@ export default {
     & label
       margin-right: 10px
       width: 150px
+      @media only screen and (max-width: 768px)
+        width: 80px
 
   .required
     color: red
 
   .error
-    display: none
-
-  .form-group--error
+    // display: none
+    width: 250px
+    position: absolute
     display: block
     border-color: red
     background: #fdd
+
+  // .form-group--error
+  //   position: absolute
+  //   display: block
+  //   border-color: red
+  //   background: #fdd
 
   .error:focus
     outline-color: #f99
@@ -414,11 +444,20 @@ export default {
 
   .picker-input
     width: 248px
+  .right
+    display: flex
+    justify-content: flex-end
+  .button
 
-  button
     border: none
-    padding: 8px 15px 8px 15px
+    padding: 13px 25px 13px 25px
     background: #f6b323
     color: #fff
     box-shadow: 1px 1px 4px #DADADA
+    cursor: pointer
+  .success
+    text-transform: uppercase
+    font-size: 12px
+    color: teal
+    position: absolute
 </style>
