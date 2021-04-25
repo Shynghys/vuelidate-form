@@ -1,5 +1,5 @@
 # vue_form
-
+https://shynghys.github.io/vuelidate-form/
 ## Project setup
 ```
 npm install

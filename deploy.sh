@@ -8,6 +8,6 @@ git init
 git add -A
 git commit -m 'gh-pages'
 
-git push -f git@github.com:shynghys/vuelidate_form.git master:gh-pages
+git push -f git@github.com:shynghys/vuelidate-form.git master:gh-pages
 
 cd -
