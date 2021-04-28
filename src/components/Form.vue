@@ -16,28 +16,18 @@
                 v-model.trim="$v.form.lastName.$model"
                 type="text"
               />
-              <div
-                class="error"
-                v-if="!$v.form.lastName.required || errors"
-                :class="{
-                  'form-group--error': $v.form.lastName.$error,
-                }"
-              >
-                Поле Фамилия обязательно.
-              </div>
-              <div
-                class="error"
-                v-if="!$v.form.lastName.minLength || errors"
-                :class="{ 'form-group--error': $v.form.lastName.$error }"
-              >
-                Поле must have at least
-                {{ $v.form.lastName.$params.minLength.min }} characters.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.lastName.required">
+                  Поле Фамилия обязательно.
+                </div>
+                <div v-if="!$v.form.lastName.minLength">
+                  Поле must have at least
+                  {{ $v.form.lastName.$params.minLength.min }} characters.
+                </div>
               </div>
             </div>
           </div>
-          <!-- <div>
-          {{ $v.form.lastName }}
-        </div> -->
+
           <div class="form-group">
             <label class="form__label"
               >Имя<span class="required">*</span></label
@@ -47,12 +37,10 @@
                 class="form__input"
                 v-model.trim="$v.form.firstName.$model"
               />
-              <div
-                class="error"
-                v-if="!$v.form.firstName.required || errors"
-                :class="{ 'form-group--error': $v.form.firstName.$error }"
-              >
-                Поле Имя обязательно.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.firstName.required">
+                  Поле Имя обязательно.
+                </div>
               </div>
             </div>
           </div>
@@ -72,12 +60,10 @@
                 v-model.trim="$v.form.birthDate.$model"
                 type="date"
               />
-              <div
-                class="error"
-                v-if="!$v.form.birthDate.required || errors"
-                :class="{ 'form-group--error': $v.form.birthDate.$error }"
-              >
-                Поле Дата рождения обязательно.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.birthDate.required">
+                  Поле Дата рождения обязательно.
+                </div>
               </div>
             </div>
           </div>
@@ -93,21 +79,13 @@
                 type="tel"
                 placeholder="7 (777) 777 77 77"
               />
-              <div
-                class="error"
-                v-if="!$v.form.mobileNumber.required || errors"
-                :class="{ 'form-group--error': $v.form.mobileNumber.$error }"
-              >
-                Поле Номер телефона обязательно.
-              </div>
-              <div
-                class="error"
-                v-if="!$v.form.mobileNumber.numbersOnly || errors"
-                :class="{
-                  'form-group--error': $v.form.mobileNumber.$error,
-                }"
-              >
-                Номер телефона должен состоять как минимум из 8 чисел.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.mobileNumber.required">
+                  Поле Номер телефона обязательно.
+                </div>
+                <div v-if="!$v.form.mobileNumber.numbersOnly">
+                  Номер телефона должен состоять как минимум из 8 чисел.
+                </div>
               </div>
             </div>
           </div>
@@ -133,17 +111,10 @@
                 <option value="Проблемные">Проблемные</option>
                 <option value="ОМС">ОМС</option>
               </select>
-
-              <!-- <input
-                class="form__input"
-                v-model.trim="$v.form.clientGroup.$model"
-              /> -->
-              <div
-                class="error"
-                v-if="!$v.form.clientGroup.required || errors"
-                :class="{ 'form-group--error': $v.form.clientGroup.$error }"
-              >
-                Поле Группа клиентов обязательно.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.clientGroup.required">
+                  Поле Группа клиентов обязательно.
+                </div>
               </div>
             </div>
           </div>
@@ -180,12 +151,8 @@
             >
             <div>
               <input class="form__input" v-model.trim="$v.form.city.$model" />
-              <div
-                class="error"
-                v-if="!$v.form.city.required || errors"
-                :class="{ 'form-group--error': $v.form.city.$error }"
-              >
-                Поле Город обязательно.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.city.required">Поле Город обязательно.</div>
               </div>
             </div>
           </div>
@@ -211,12 +178,10 @@
                 class="form__input"
                 v-model.trim="$v.form.documentType.$model"
               />
-              <div
-                class="error"
-                v-if="!$v.form.documentType.required || errors"
-                :class="{ 'form-group--error': $v.form.documentType.$error }"
-              >
-                Поле Тип документа обязательно.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.documentType.required">
+                  Поле Тип документа обязательно.
+                </div>
               </div>
             </div>
           </div>
@@ -246,21 +211,20 @@
                 v-model.trim="$v.form.documentGivenDate.$model"
                 type="date"
               />
-              <div
-                class="error"
-                v-if="!$v.form.documentGivenDate.required || errors"
-                :class="{
-                  'form-group--error': $v.form.documentGivenDate.$error,
-                }"
-              >
-                Поле Дата выдачи обязательно.
+              <div v-if="errors" class="error">
+                <div v-if="!$v.form.documentGivenDate.required">
+                  Поле Дата выдачи обязательно.
+                </div>
               </div>
             </div>
+          </div>
+          <div class="form-group">
+            <div><input type="checkbox" checked /> Не отправлять СМС</div>
           </div>
         </div>
 
         <div>
-          <div v-if="errors">
+          <div v-if="errors" class="error">
             Форма не правильно заполнена, заполните и отправьте заного.
           </div>
           <div
@@ -283,10 +247,11 @@
           </div>
         </div>
       </form>
-      <pre>{{ $v }}</pre>
-      <div>error {{ $v.form.$anyError }}</div>
+
+      <!-- <div>error {{ $v.form.$anyError }}</div>
       <div>error1 {{ $v.form.lastName.$anyError }}</div>
       <div>dirty {{ $v.form.$anyDirty }}</div>
+      <pre>{{ $v }}</pre> -->
     </div>
   </div>
 </template>
@@ -359,6 +324,7 @@ export default {
   },
   methods: {
     submitForm() {
+      this.$v.form.$touch();
       this.empty = !this.$v.form.$anyDirty;
       this.errors = this.$v.form.$anyError;
 
@@ -421,18 +387,10 @@ export default {
     color: red
 
   .error
-    // display: none
     width: 250px
     position: absolute
-    display: block
     border-color: red
     background: #fdd
-
-  // .form-group--error
-  //   position: absolute
-  //   display: block
-  //   border-color: red
-  //   background: #fdd
 
   .error:focus
     outline-color: #f99
@@ -444,17 +402,19 @@ export default {
 
   .picker-input
     width: 248px
+
   .right
     display: flex
     justify-content: flex-end
-  .button
 
+  .button
     border: none
     padding: 13px 25px 13px 25px
     background: #f6b323
     color: #fff
     box-shadow: 1px 1px 4px #DADADA
     cursor: pointer
+
   .success
     text-transform: uppercase
     font-size: 12px
